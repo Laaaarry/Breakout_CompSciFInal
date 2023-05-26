@@ -66,7 +66,7 @@ public class Game extends JPanel
 		racquet.paint(g2d);
 
 		g2d.setColor(Color.GRAY);
-		g2d.setFont(new Font("Verdana", Font.BOLD, 30));
+		g2d.setFont(new Font("Ariel", Font.BOLD, 30));
 		g2d.drawString(String.valueOf(getScore()), 10, 30);
 	}
 
@@ -82,13 +82,13 @@ public class Game extends JPanel
 		game.ball.y = 500;
 		game.ball.xa = ballInitialDir();
 		game.ball.ya = 1;
-		game.racquet.x = 120;
+		game.racquet.x = 220;
 		game.speed = 1;
 	}
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		JFrame frame = new JFrame("Mini Tennis");
+		JFrame frame = new JFrame("Breakout");
 		Game game = new Game();
 		frame.add(game);
 		frame.setSize(500, 800);
