@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 
 public class Game extends JPanel
 {
-
 	Ball ball = new Ball(this);
 	Racquet racquet = new Racquet(this);
 	int speed = 1;
+	boolean inGame = false;
 
 	private int getScore()
 	{
@@ -70,41 +70,52 @@ public class Game extends JPanel
 		g2d.drawString(String.valueOf(getScore()), 10, 30);
 	}
 
+	public void gameLoop(Game game, JFrame frame) throws InterruptedException
+	{
+		frame.add(game);
+		game.newGame(game);
+
+		while (game.inGame)
+		{
+			game.move();
+			game.repaint();
+			Thread.sleep(10);
+		}
+	}
+
 	public void gameOver(Game game)
 	{
 		JOptionPane.showMessageDialog(this, "your score is: " + getScore(), "Game Over", JOptionPane.YES_NO_OPTION);
+		game.inGame = false;
 		newGame(game);
 	}
 
-	public static void newGame(Game game)
+	public void newGame(Game game)
 	{
-		game.ball.x = 250;
-		game.ball.y = 500;
+		game.ball.x = 235;
+		game.ball.y = 400;
 		game.ball.xa = ballInitialDir();
 		game.ball.ya = 1;
 		game.racquet.x = 220;
 		game.speed = 1;
+
+		game.inGame = true;
 	}
 
 	public static void main(String[] args) throws InterruptedException
 	{
 		JFrame frame = new JFrame("Breakout");
 		Game game = new Game();
-		frame.add(game);
+		Menu menu = new Menu(frame);
+
+		frame.add(menu);
+		frame.setLayout(null);
 		frame.setSize(500, 800);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		game.racquet.y = frame.getHeight() - 60;
-
-		newGame(game);
-
-		while (true)
-		{
-			game.move();
-			game.repaint();
-			Thread.sleep(10);
-		}
+		game.gameLoop(game, frame);
 	}
 
 	public static int ballInitialDir()

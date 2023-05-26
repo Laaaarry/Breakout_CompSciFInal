@@ -18,7 +18,6 @@ public class Ball
 
 	void move()
 	{
-		boolean changeDirection = true;
 		if (x + xa < 0)
 			xa = game.speed;
 		else if (x + xa > game.getWidth() - DIAMETER)
@@ -32,11 +31,8 @@ public class Ball
 			ya = -game.speed;
 			y = game.racquet.getTopY() - DIAMETER;
 			game.speed++;
-		} else 
-			changeDirection = false;
-		
-		// if (changeDirection) 
-		// 	Sound.BALL.play();
+		}
+
 		x = x + xa;
 		y = y + ya;
 	}
