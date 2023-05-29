@@ -1,46 +1,30 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.*;
 
-public class Menu extends JPanel implements ActionListener
+public class Menu
 {
-    private Game game;
-    private JFrame frame;
 
-    JButton playButton;
+    JButton resumeButton;
+    JButton newGameButton;
     JButton exitButton;
 
-	public Menu(JFrame frame)
-	{
-        playButton = new JButton("Play Game");
+	public Menu(JFrame f){
+        resumeButton = new JButton("Resume Game");
+        newGameButton = new JButton("New Game");
         exitButton = new JButton("Exit Game");
 
-        playButton.setBounds(200, 300, 100, 30);
-        exitButton.setBounds(200, 400, 100, 30);
-
-        playButton.addActionListener(this);
-        exitButton.addActionListener(this);
-
-        frame.add(playButton);
-        frame.add(exitButton);
+        resumeButton.setBounds(400, 100, 200, 100);
+        newGameButton.setBounds(400, 250, 200, 100);
+        exitButton.setBounds(400, 400, 200, 100);
 	}
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        if (e.getSource() == playButton)
-        {
-            try
-            {
-                game.gameLoop(game, frame);
-            } catch (InterruptedException e1)
-            {
-                e1.printStackTrace();
-            }
-        }else if (e.getSource() == exitButton)
-        {
-            System.exit(0);
-        }
+    public void addButtons(JFrame f){
+        f.add(resumeButton);
+        f.add(newGameButton);
+        f.add(exitButton);
     }
+    public void removeButtons(JFrame f){
+        f.remove(resumeButton);
+        f.remove(newGameButton);
+        f.remove(exitButton);
+    }
+
 }
