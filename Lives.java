@@ -5,7 +5,7 @@ import java.awt.geom.*;
 public class Lives extends SpriteBase{
     private static int size=20;
     int[]diamondX=new int[4];
-    int[]diamondY=new int[4]
+    int[]diamondY=new int[4];
     
     GamePanel panel;
 
@@ -17,7 +17,5 @@ public class Lives extends SpriteBase{
         this.xPos=xPos;
         this.yPos=yPos;
         this.panel=p;
-        
-        
     }
 }

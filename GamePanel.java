@@ -116,6 +116,15 @@ public class GamePanel extends JPanel{
         NewRound();
     }
 
+    public boolean belowPaddle(){
+        if(ball.getY()+ball.getHeight()>paddle.getCenterY()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public void NewRound(){
         int flag=0;
         for(int i=0;i<bricks.length;i++){
@@ -136,23 +145,27 @@ public class GamePanel extends JPanel{
     public void gameCycle(){
         ball.bMove();
         paddle.pMove();
+   
         checkCollisions();
         repaint();
     }
 
     public void NewGame(){
-        Reset();
-        ResumeGame();
+        if(!GameRunning){
+            Reset();
+            ResumeGame();
+        }
     }
     public void ResumeGame(){
-        m.removeButtons(f);
         GameRunning=true;
         timer.restart();
         repaint();
     }
     public void PauseGame(){
         GameRunning=false;
-        timer.stop(); 
+        if(timer!=null){
+            timer.stop();
+        }
     }
     public void exit(){
         System.exit(0);
@@ -164,10 +177,9 @@ public class GamePanel extends JPanel{
         paintGame(g2);
         if(GameRunning){
             inGameMessage(g2);
-            
         }
         if(!GameRunning){
-
+            MenuScreen(g2);
         }
 
     }
@@ -237,6 +249,9 @@ public class GamePanel extends JPanel{
             }
             if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
                 PauseGame();
+            }
+            if(e.getKeyCode()==KeyEvent.VK_0){
+                ball.speedUp();
             }
         }
     }
