@@ -7,6 +7,7 @@ public class GamePanel extends JPanel{
     private Ball ball;
     private Paddle paddle;
     private Bricks[]bricks; //an array for creating bricks
+    private Lives[]lives;
     private JFrame f;
     Menu m=new Menu(f);
 
@@ -21,7 +22,6 @@ public class GamePanel extends JPanel{
     private boolean GameRunning=false;
     private int score;
     private int round;
-    private int lives;
 
     public GamePanel(JFrame f){
         this.f=f;
@@ -34,13 +34,17 @@ public class GamePanel extends JPanel{
     }
     private void Reset(){
         ball=new Ball(getRandomColor(),this,ballSTARTX,ballSTARTY);
+        ball.speedReset();
         paddle=new Paddle(getRandomColor(),this);
         bricks=new Bricks[row*col];
         createBricks();
+        lives=new Lives[5];
+        if(timer!=null){
+            timer.stop();
+        }
         timer=new Timer(delay,new TimeEvents());
         round=1;
         score=0;
-        lives=3;
     }
     public void createBricks(){
         int b=0;
@@ -50,6 +54,12 @@ public class GamePanel extends JPanel{
                 bricks[b]=new Bricks((j-1)*75+50,(i-1)*35+70,getRandomColor(),this);
                 b++;
             }
+        }
+    }
+
+    public void createLives(){
+        for(int i=0;i<lives.length;i++){
+            lives[i]=new Lives(750+30*i,60,this);
         }
     }
 
@@ -81,24 +91,29 @@ public class GamePanel extends JPanel{
             br=brick.getBounds();
             if(!bricks[i].checkStatus()&&ba.intersects(br)){
                 bounceBallBrick(ball, bricks[i]);
-                bricks[i].Destroyed();
-                score+=10;
+                BrickDestroyed(i);
             }
         }
     }
     public void bounceBallBrick(Ball ba, Bricks br){
-        if(ball.BallAbove(ba,br)){
-            ball.Up();
-        }
-        if(ball.BallBelow(ba, br)){
-            ball.Down();
-        }
         if(ball.BallLeft(ba, br)){
             ball.Left();
         }
         if(ball.BallRight(ba, br)){
             ball.Right();
         }
+        if(ball.BallAbove(ba,br)){
+            ball.Up();
+        }
+        if(ball.BallBelow(ba, br)){
+            ball.Down();
+        }
+        
+    }
+    public void BrickDestroyed(int i){
+        bricks[i].Destroyed();
+        score+=10;
+        NewRound();
     }
 
     public void NewRound(){
@@ -117,35 +132,6 @@ public class GamePanel extends JPanel{
         }
     }
 
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        Graphics2D g2=(Graphics2D)g;
-        paintGame(g2);
-        inGameMessage(g2);
-
-    }
-    
-    public void paintGame(Graphics2D g2){
-        ball.draw(g2);
-        paddle.draw(g2);
-        for(int i=0;i<bricks.length;i++){
-            if(!bricks[i].checkStatus()){
-                bricks[i].draw(g2);
-            }
-        }
-    }
-    public void GameText(String message, int x, int y, Graphics g2){
-        Font gFont=new Font("ComicSans",Font.BOLD+Font.ITALIC,30);
-        g2.setFont(gFont);
-        g2.setColor(Color.CYAN);
-        g2.drawString(message,x,y);
-    }
-    public void inGameMessage(Graphics2D g2){
-        String roundString="Round: "+String.valueOf(round);
-        GameText(roundString,50,40,g2);
-        String scoreString="Score: "+String.valueOf(score);
-        GameText(scoreString,300,40,g2);
-    }
     
     public void gameCycle(){
         ball.bMove();
@@ -172,17 +158,58 @@ public class GamePanel extends JPanel{
         System.exit(0);
     }
     
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        Graphics2D g2=(Graphics2D)g;
+        paintGame(g2);
+        if(GameRunning){
+            inGameMessage(g2);
+            
+        }
+        if(!GameRunning){
+
+        }
+
+    }
+    
+    public void paintGame(Graphics2D g2){
+        ball.draw(g2);
+        paddle.draw(g2);
+        for(int i=0;i<bricks.length;i++){
+            if(!bricks[i].checkStatus()){
+                bricks[i].draw(g2);
+            }
+        }
+    }
+    public void GameText(String message, int x, int y, Graphics g2){
+        Font gFont=new Font("ComicSans",Font.BOLD+Font.ITALIC,30);
+        g2.setFont(gFont);
+        g2.setColor(Color.CYAN);
+        g2.drawString(message,x,y);
+    }
+    public void MenuScreen(Graphics2D g2){
+
+    }
+    public void inGameMessage(Graphics2D g2){
+        String roundString="Round: "+String.valueOf(round);
+        GameText(roundString,50,40,g2);
+        String scoreString="Score: "+String.valueOf(score);
+        GameText(scoreString,300,40,g2);
+        String livesString="Lives: ";
+        GameText(livesString, 550, 40, g2);
+    }
+
     class TimeEvents implements ActionListener{
         public void actionPerformed(ActionEvent e){
             if(GameRunning){
                 gameCycle();
-                NewRound();
             }
             if(!GameRunning){
 
             }
         }
     }
+
     class KeyEvents implements KeyListener{
         public void keyTyped(KeyEvent e) {}
         public void keyReleased(KeyEvent e)

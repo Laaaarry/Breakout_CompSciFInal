@@ -3,9 +3,9 @@ import java.awt.geom.*;
 
 public class Ball extends SpriteBase{
     //ball attributes
-    private static int BALLSIZE=30;
+    private static int BALLSIZE=20;
     private static double ballSpeed=1;
-    private double xDir=-ballSpeed;
+    private double xDir=ballSpeed;
     private double yDir=-ballSpeed;
     private GamePanel panel;
 
@@ -56,15 +56,19 @@ public class Ball extends SpriteBase{
         return isBelow;
     }
     public boolean BallLeft(Ball ba, Bricks br){
-        boolean isLeft=ba.getX()+ba.getWidth()-xDir<br.getX();
+        boolean isLeft=ba.getCenterX()-xDir<br.getX();
         return isLeft;
     }
     public boolean BallRight(Ball ba, Bricks br){
-        boolean isRight=ba.getX()-xDir>br.getX()+br.getWidth();
+        boolean isRight=ba.getCenterX()-xDir>br.getX()+br.getWidth();
         return isRight;
     }
 
     public void speedUp(){
-        ballSpeed+=0.5;
+        ballSpeed+=1;
+        
+    }
+    public void speedReset(){
+        ballSpeed=1;
     }
 }

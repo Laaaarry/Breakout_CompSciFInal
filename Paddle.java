@@ -5,7 +5,7 @@ public class Paddle extends SpriteBase{
     private static int STARTX=425;
     private static int STARTY=500;
     private static int pWidth=150;
-    private static int pHeight=50;
+    private static int pHeight=20;
     private GamePanel panel;
 
     private static double moveSpeed=0;
