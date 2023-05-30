@@ -3,7 +3,7 @@ import java.awt.geom.*;
 public class Paddle extends SpriteBase{
     //attributes for the paddle
     private static int STARTX=425;
-    private static int STARTY=500;
+    private static int STARTY=530;
     private static int pWidth=150;
     private static int pHeight=20;
     private GamePanel panel;

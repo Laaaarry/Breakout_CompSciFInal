@@ -7,9 +7,10 @@ public class GamePanel extends JPanel{
     private Ball ball;
     private Paddle paddle;
     private Bricks[]bricks; //an array for creating bricks
-    private Lives[]lives;
     private JFrame f;
     Menu m=new Menu(f);
+    Background bg;
+    Heart heart;
 
     private static int ballSTARTX=200;
     private static int ballSTARTY=400;
@@ -19,13 +20,16 @@ public class GamePanel extends JPanel{
 
     private Timer timer;
     private int delay=10;
+    private boolean GameNew=true;
     private boolean GameRunning=false;
+    private boolean GameOver=false;
+    private boolean GamePaused=false;
     private int score;
     private int round;
+    private int lives=5;
 
     public GamePanel(JFrame f){
         this.f=f;
-
         Reset();
         addKeyListener(new KeyEvents());
         setFocusable(true);
@@ -37,8 +41,11 @@ public class GamePanel extends JPanel{
         ball.speedReset();
         paddle=new Paddle(getRandomColor(),this);
         bricks=new Bricks[row*col];
+        lives=5;
+        heart=new Heart(new ImageIcon("Images/heart.png").getImage());
+        bg=new Background(new ImageIcon("Images/bg.png").getImage());
+
         createBricks();
-        lives=new Lives[5];
         if(timer!=null){
             timer.stop();
         }
@@ -54,12 +61,6 @@ public class GamePanel extends JPanel{
                 bricks[b]=new Bricks((j-1)*75+50,(i-1)*35+70,getRandomColor(),this);
                 b++;
             }
-        }
-    }
-
-    public void createLives(){
-        for(int i=0;i<lives.length;i++){
-            lives[i]=new Lives(750+30*i,60,this);
         }
     }
 
@@ -94,6 +95,10 @@ public class GamePanel extends JPanel{
                 BrickDestroyed(i);
             }
         }
+        if(belowPaddle()){
+            loseLife();
+            ball.Up();
+        }
     }
     public void bounceBallBrick(Ball ba, Bricks br){
         if(ball.BallLeft(ba, br)){
@@ -117,11 +122,16 @@ public class GamePanel extends JPanel{
     }
 
     public boolean belowPaddle(){
-        if(ball.getY()+ball.getHeight()>paddle.getCenterY()){
+        if(ball.getCenterY()>paddle.getCenterY()){
             return true;
         }
         else{
             return false;
+        }
+    }
+    public void isGameOver(){
+        if(lives<1){
+            EndGame();
         }
     }
 
@@ -140,7 +150,9 @@ public class GamePanel extends JPanel{
             score+=50;
         }
     }
-
+    public void loseLife(){
+        if(lives>0){lives--;}
+    }
     
     public void gameCycle(){
         ball.bMove();
@@ -151,21 +163,30 @@ public class GamePanel extends JPanel{
     }
 
     public void NewGame(){
-        if(!GameRunning){
+        if(GameNew||GameOver){
             Reset();
             ResumeGame();
         }
     }
     public void ResumeGame(){
-        GameRunning=true;
-        timer.restart();
-        repaint();
+        if(GamePaused){
+            GameRunning=true;
+            timer.restart();
+            repaint();
+        }
     }
     public void PauseGame(){
         GameRunning=false;
+        GamePaused=true;
         if(timer!=null){
             timer.stop();
         }
+    }
+    public void EndGame(){
+        GameRunning=false;
+        GamePaused=false;
+        GameNew=false;
+        GameOver=true;
     }
     public void exit(){
         System.exit(0);
@@ -174,6 +195,7 @@ public class GamePanel extends JPanel{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2=(Graphics2D)g;
+        bg.paintBg(g2);
         paintGame(g2);
         if(GameRunning){
             inGameMessage(g2);
@@ -181,7 +203,6 @@ public class GamePanel extends JPanel{
         if(!GameRunning){
             MenuScreen(g2);
         }
-
     }
     
     public void paintGame(Graphics2D g2){
@@ -209,6 +230,12 @@ public class GamePanel extends JPanel{
         GameText(scoreString,300,40,g2);
         String livesString="Lives: ";
         GameText(livesString, 550, 40, g2);
+        for(int i=0;i<lives;i++){
+            heart.heartImage(650+i*60, 10, g2);
+        }
+    }
+    public void drawLife(Graphics g2,int x, int y){
+        
     }
 
     class TimeEvents implements ActionListener{
@@ -241,7 +268,7 @@ public class GamePanel extends JPanel{
                 System.out.print("right");
             }
 
-            if(e.getKeyCode()==KeyEvent.VK_ENTER){
+            if(e.getKeyCode()==KeyEvent.VK_ENTER&&!GameRunning){
                 NewGame();
             }
             if(e.getKeyCode()==KeyEvent.VK_SPACE){
