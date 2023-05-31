@@ -1,15 +1,9 @@
 import java.awt.*;
-import javax.swing.*;
-
 
 public class Heart {
     private Image h;
     int xPos;
     int yPos;
-
-    public Heart(String img){
-        this(new ImageIcon(img).getImage());
-    }
 
     public Heart(Image img){
         this.h=img;

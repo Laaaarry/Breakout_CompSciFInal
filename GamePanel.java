@@ -18,7 +18,7 @@ public class GamePanel extends JPanel {
     private static int ballSTARTX = 200;
     private static int ballSTARTY = 400;
     private int row = 12;
-    private int col = 8;
+    private int col = 7;
     private int pSPEED = 10;
 
     private Timer timer;
@@ -34,6 +34,8 @@ public class GamePanel extends JPanel {
 
     public GamePanel(JFrame f) {
         this.f = f;
+        heart = new Heart(new ImageIcon("Images/heart.png").getImage());
+        bg = new Background(new ImageIcon("Images/bg.png").getImage());
         Reset();
         addKeyListener(new KeyEvents());
         setFocusable(true);
@@ -47,8 +49,8 @@ public class GamePanel extends JPanel {
         paddle = new Paddle(getRandomColor(), this);
         bricks = new Bricks[row * col];
         lives = maxLives;
-        heart = new Heart(new ImageIcon("Images/heart.png").getImage());
-        bg = new Background(new ImageIcon("Images/bg.png").getImage());
+        
+
 
         createBricks();
         if (timer != null) {
@@ -280,17 +282,19 @@ public class GamePanel extends JPanel {
             GameText("Press Space",430, 230, menuText, 24,g2);
         }
         if(GameOver){
-            GameText(gOver, 370, 205, menuText,50, g2);
+            GameText(gOver, 365, 205, menuText,50, g2);
             GameText(gScore,330,245,menuText,30,g2);
         }
         g2.setColor(menuButton);
-        
         g2.fillRect(400, 275, 200, 100);
         g2.fillRect(400, 400, 200, 100);
         GameText("New Game", 420, 315, menuText,30, g2);
         GameText("Press Enter",430, 355, menuText, 24,g2);
         GameText("Exit Game", 420, 440, menuText,30, g2);
         GameText("Press 0",450, 480, menuText, 24,g2);
+        if(GameNew||GameOver){
+            GameText("BREAKOUT", 330, 120, menuButton, 60, g2);
+        }
     }
 
     class TimeEvents implements ActionListener {
