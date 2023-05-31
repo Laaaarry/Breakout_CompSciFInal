@@ -4,8 +4,8 @@ import java.awt.geom.*;
 public class Bricks extends SpriteBase{
     //brick attributes
     private boolean isDestroyed;
-    private static int bWidth=65;
-    private static int bHeight=20;
+    private static int bWidth=80;
+    private static int bHeight=30;
     private GamePanel panel;
 
     //brick constructor

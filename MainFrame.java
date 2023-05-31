@@ -10,7 +10,7 @@ public class MainFrame extends JFrame {
     //constructor for the JFrame and setting its characteristics
     public MainFrame()
     {
-        GamePanel gp=new GamePanel(this);
+        GamePanel gp=new GamePanel();
         System.out.println(gp.getHeight()+" "+gp.getWidth());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Breakout!!");

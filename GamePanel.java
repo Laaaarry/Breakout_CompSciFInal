@@ -3,37 +3,43 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class GamePanel extends JPanel {
-
+    // Initialize Object Variables
     private Ball ball;
     private Paddle paddle;
     private Bricks[] bricks; // an array for creating bricks
-    private JFrame f;
-    Menu m = new Menu(f);
-    Background bg;
-    Heart heart;
-    Color menuScreen=new Color(102,178,225);
-    Color menuButton=new Color(51,0,102);
-    Color menuText=new Color(225,225,255);
+    private Background bg;
+    private Heart heart;
 
+    // Setting color variables
+    private Color menuScreen=new Color(102,178,225);
+    private Color menuButton=new Color(51,0,102);
+    private Color menuText=new Color(225,225,255);
+
+    // Ball starting positions
     private static int ballSTARTX = 200;
     private static int ballSTARTY = 400;
-    private int row = 12;
-    private int col = 7;
+    // The varibles for the number of bricks per row and column
+    private int row = 11;
+    private int col = 6;
+    // Speed of the paddle
     private int pSPEED = 10;
 
-    private Timer timer;
-    private int delay = 10;
-    private boolean GameNew = true;
-    private boolean GameRunning = false;
-    private boolean GameOver = false;
-    private boolean GamePaused = false;
     private int score;
     private int round;
     private int maxLives=5;
     private int lives = maxLives;
 
-    public GamePanel(JFrame f) {
-        this.f = f;
+    // Animation-related variables
+    private Timer timer;
+    private int delay = 10;
+    // Game-state boolean variables
+    private boolean GameNew = true;
+    private boolean GameRunning = false;
+    private boolean GameOver = false;
+    private boolean GamePaused = false;
+    private boolean InMenu=true;
+
+    public GamePanel() {
         heart = new Heart(new ImageIcon("Images/heart.png").getImage());
         bg = new Background(new ImageIcon("Images/bg.png").getImage());
         Reset();
@@ -65,7 +71,7 @@ public class GamePanel extends JPanel {
         int b = 0;
         for (int i = 1; i <= col; i++) {
             for (int j = 1; j <= row; j++) {
-                bricks[b] = new Bricks((j - 1) * 75 + 50, (i - 1) * 35 + 70, getRandomColor(), this);
+                bricks[b] = new Bricks((j - 1) * 90 + 10, (i - 1) * 40 + 70, getRandomColor(), this);
                 b++;
             }
         }
@@ -182,6 +188,7 @@ public class GamePanel extends JPanel {
             GamePaused=false;
             GameNew=false;
             GameOver=false;
+            InMenu=false;
             timer.restart();
             repaint();
         }
@@ -193,6 +200,7 @@ public class GamePanel extends JPanel {
             GamePaused=false;
             GameNew=false;
             GameOver=false;
+            InMenu=false;
             timer.restart();
             repaint();
         }
@@ -201,6 +209,7 @@ public class GamePanel extends JPanel {
     public void PauseGame() {
         GameRunning = false;
         GamePaused = true;
+        InMenu=true;
         if (timer != null) {
             timer.stop();
         }
@@ -212,6 +221,7 @@ public class GamePanel extends JPanel {
         GamePaused = false;
         GameNew = false;
         GameOver = true;
+        InMenu=true;
 
         if(timer!=null){
             timer.stop();
@@ -329,10 +339,10 @@ public class GamePanel extends JPanel {
             if (e.getKeyCode() == KeyEvent.VK_ENTER && !GameRunning) {
                 NewGame();
             }
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (e.getKeyCode() == KeyEvent.VK_SPACE && InMenu) {
                 ResumeGame();
             }
-            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE && !InMenu) {
                 PauseGame();
             }
             if (e.getKeyCode() == KeyEvent.VK_1) {
