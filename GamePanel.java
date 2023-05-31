@@ -29,7 +29,7 @@ public class GamePanel extends JPanel {
     private boolean GamePaused = false;
     private int score;
     private int round;
-    private int maxLives=1;
+    private int maxLives=5;
     private int lives = maxLives;
 
     public GamePanel(JFrame f) {
@@ -270,32 +270,33 @@ public class GamePanel extends JPanel {
         String gOver="Game Over";
         String gScore="Score: "+score;
         if(GameNew){
-            GameText(gNew, 283, 100, menuText,45, g2);
+            GameText(gNew, 283, 225, menuText,45, g2);
         }
         if(GamePaused){
             GameText(gPaused, 340, 100, menuText,50, g2);
+            g2.setColor(menuButton);
+            g2.fillRect(400, 150, 200,100);
+            GameText("Resume Game", 405, 190, menuText,28, g2);
+            GameText("Press Space",430, 230, menuText, 24,g2);
         }
         if(GameOver){
-            GameText(gOver, 370, 80, menuText,50, g2);
-            GameText(gScore,330,120,menuText,30,g2);
+            GameText(gOver, 370, 205, menuText,50, g2);
+            GameText(gScore,330,245,menuText,30,g2);
         }
         g2.setColor(menuButton);
-        g2.fillRect(400, 150, 200,100);
+        
         g2.fillRect(400, 275, 200, 100);
         g2.fillRect(400, 400, 200, 100);
-        GameText("New Game", 420, 190, menuText,30, g2);
-        GameText("Press Enter",430, 230, menuText, 24,g2);
-
-
+        GameText("New Game", 420, 315, menuText,30, g2);
+        GameText("Press Enter",430, 355, menuText, 24,g2);
+        GameText("Exit Game", 420, 440, menuText,30, g2);
+        GameText("Press 0",450, 480, menuText, 24,g2);
     }
 
     class TimeEvents implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (GameRunning) {
                 gameCycle();
-            }
-            if (!GameRunning) {
-
             }
         }
     }
@@ -329,8 +330,11 @@ public class GamePanel extends JPanel {
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 PauseGame();
             }
-            if (e.getKeyCode() == KeyEvent.VK_0) {
+            if (e.getKeyCode() == KeyEvent.VK_1) {
                 ball.speedUp();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_0){
+                System.exit(0);
             }
         }
     }
