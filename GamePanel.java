@@ -11,6 +11,9 @@ public class GamePanel extends JPanel {
     Menu m = new Menu(f);
     Background bg;
     Heart heart;
+    Color menuScreen=new Color(102,178,225);
+    Color menuButton=new Color(51,0,102);
+    Color menuText=new Color(225,225,255);
 
     private static int ballSTARTX = 200;
     private static int ballSTARTY = 400;
@@ -26,7 +29,8 @@ public class GamePanel extends JPanel {
     private boolean GamePaused = false;
     private int score;
     private int round;
-    private int lives = 5;
+    private int maxLives=1;
+    private int lives = maxLives;
 
     public GamePanel(JFrame f) {
         this.f = f;
@@ -42,7 +46,7 @@ public class GamePanel extends JPanel {
         ball.speedReset();
         paddle = new Paddle(getRandomColor(), this);
         bricks = new Bricks[row * col];
-        lives = 5;
+        lives = maxLives;
         heart = new Heart(new ImageIcon("Images/heart.png").getImage());
         bg = new Background(new ImageIcon("Images/bg.png").getImage());
 
@@ -170,9 +174,12 @@ public class GamePanel extends JPanel {
     }
 
     public void NewGame() {
-        if (GameNew || GameOver) {
+        if (GameNew || GameOver || GamePaused) {
             Reset();
             GameRunning = true;
+            GamePaused=false;
+            GameNew=false;
+            GameOver=false;
             timer.restart();
             repaint();
         }
@@ -181,6 +188,9 @@ public class GamePanel extends JPanel {
     public void ResumeGame() {
         if (GamePaused) {
             GameRunning = true;
+            GamePaused=false;
+            GameNew=false;
+            GameOver=false;
             timer.restart();
             repaint();
         }
@@ -192,6 +202,7 @@ public class GamePanel extends JPanel {
         if (timer != null) {
             timer.stop();
         }
+        repaint();
     }
 
     public void EndGame() {
@@ -199,6 +210,11 @@ public class GamePanel extends JPanel {
         GamePaused = false;
         GameNew = false;
         GameOver = true;
+
+        if(timer!=null){
+            timer.stop();
+        }
+        repaint();
     }
 
     public void exit() {
@@ -228,30 +244,48 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public void GameText(String message, int x, int y, Graphics g2) {
-        Font gFont = new Font("ComicSans", Font.BOLD + Font.ITALIC, 30);
+    public void GameText(String message, int x, int y,Color color,int size, Graphics g2) {
+        Font gFont = new Font("ComicSans", Font.BOLD + Font.ITALIC, size);
         g2.setFont(gFont);
-        g2.setColor(Color.CYAN);
+        g2.setColor(color);
         g2.drawString(message, x, y);
-    }
-
-    public void MenuScreen(Graphics2D g2) {
-
     }
 
     public void inGameMessage(Graphics2D g2) {
         String roundString = "Round: " + String.valueOf(round);
-        GameText(roundString, 50, 40, g2);
+        GameText(roundString, 50, 40,menuText,30, g2);
         String scoreString = "Score: " + String.valueOf(score);
-        GameText(scoreString, 300, 40, g2);
+        GameText(scoreString, 300, 40,menuText,30, g2);
         String livesString = "Lives: ";
-        GameText(livesString, 550, 40, g2);
+        GameText(livesString, 550, 40, menuText,30,g2);
         for (int i = 0; i < lives; i++) {
             heart.heartImage(650 + i * 60, 10, g2);
         }
     }
+    public void MenuScreen(Graphics2D g2) {
+        g2.setColor(menuScreen);
+        g2.fillRect(275, 25, 450, 525);
+        String gNew="Press Enter To Start";
+        String gPaused="Game Paused";
+        String gOver="Game Over";
+        String gScore="Score: "+score;
+        if(GameNew){
+            GameText(gNew, 283, 100, menuText,45, g2);
+        }
+        if(GamePaused){
+            GameText(gPaused, 340, 100, menuText,50, g2);
+        }
+        if(GameOver){
+            GameText(gOver, 370, 80, menuText,50, g2);
+            GameText(gScore,330,120,menuText,30,g2);
+        }
+        g2.setColor(menuButton);
+        g2.fillRect(400, 150, 200,100);
+        g2.fillRect(400, 275, 200, 100);
+        g2.fillRect(400, 400, 200, 100);
+        GameText("New Game", 420, 190, menuText,30, g2);
+        GameText("Press Enter",430, 230, menuText, 24,g2);
 
-    public void drawLife(Graphics g2, int x, int y) {
 
     }
 
