@@ -237,6 +237,7 @@ public class GamePanel extends JPanel {
     }
 
     public void paintGame(Graphics2D g2) {
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         ball.draw(g2);
         paddle.draw(g2);
         for (int i = 0; i < bricks.length; i++) {
