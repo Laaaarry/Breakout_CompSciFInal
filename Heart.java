@@ -5,10 +5,13 @@ public class Heart {
     int xPos;
     int yPos;
 
-    public Heart(Image img){
-        this.h=img;
+    // Constructor for the image that shows the lives
+    public Heart(Image img) {
+        this.h = img;
     }
-    public void heartImage(int x, int y,Graphics2D g2){
-        g2.drawImage(h, x, y,null);
+
+    // Draws the heart
+    public void heartImage(int x, int y, Graphics2D g2) {
+        g2.drawImage(h, x, y, null);
     }
 }

@@ -31,9 +31,11 @@ public class Ball extends SpriteBase {
             Up();
         }
         super.move(xDir, yDir);
+
         speedCounter();
     }
 
+    // Methods for direction changes
     public void Left() {
         xDir = -Math.abs(xDir);
     }
@@ -74,6 +76,7 @@ public class Ball extends SpriteBase {
         return isRight;
     }
 
+    // Increases the speed of the ball
     public void speedUp() {
         if (ballSpeed + 1 <= speedCap) {
             ballSpeed += 1;
@@ -82,30 +85,35 @@ public class Ball extends SpriteBase {
         }
     }
 
+    // Returns the speed to its inital value
     public void speedReset() {
         ballSpeed = 3;
         xDir = ballSpeed;
         yDir = -ballSpeed;
     }
 
+    // Counter for every 500 game cycles
     private int count = 0;
 
     public void speedCounter() {
         count++;
         if (count > 500) {
+            // Every 500 cycles, changes ball speed
             speedRandomizeX();
             speedRandomizeY();
-            System.out.println("Randomized");
             count = 0;
         }
     }
 
+    // Randomly increases/decreases the ball speed slightly
     public void speedRandomizeX() {
         double rand = Math.random() + 1;
         if (rand < 1.5 && xDir > 3) {
             xDir -= 0.5;
+            System.out.println("Random slow");
         } else {
             xDir += 0.4;
+            System.out.println("Random fast");
         }
     }
 
