@@ -22,7 +22,7 @@ public class GamePanel extends JPanel {
     private int row = 11;
     private int col = 6;
     // Speed of the paddle
-    private int pSPEED = 10;
+    private int pSPEED = 15;
     // variables to track the score, round, and lives
     private int score;
     private int round;
