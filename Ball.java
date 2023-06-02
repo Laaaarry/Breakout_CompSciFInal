@@ -116,7 +116,7 @@ public class Ball extends SpriteBase {
                 xDir += 0.5;
             }
             System.out.println("Random slow");
-        } else if (rand >= 1.5 && Math.abs(xDir) < ballSpeed + 3) {
+        } else if (rand >= 1.5 && Math.abs(xDir) < ballSpeed + 2) {
             if (xDir > 0) {
                 xDir += 0.5;
             }
@@ -137,7 +137,7 @@ public class Ball extends SpriteBase {
                 yDir += 0.5;
             }
             System.out.println("Random slow");
-        } else if (rand >= 1.5 && Math.abs(yDir) < ballSpeed + 3) {
+        } else if (rand >= 1.5 && Math.abs(yDir) < ballSpeed + 2) {
             if (yDir > 0) {
                 yDir += 0.5;
             }
