@@ -2,16 +2,17 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class Bricks extends SpriteBase {
+    // This class is the object of the bricks
     // brick attributes
-    private boolean isDestroyed;
+    private boolean isDestroyed; // indicates if the brick is destroyed or not (true = destroyed)
+    // Dimensions of the brick
     private static int bWidth = 80;
     private static int bHeight = 30;
-    private GamePanel panel;
 
     // brick constructor
     public Bricks(int xPos, int yPos, Color color, GamePanel p) {
+        // the GamePanel instance was not used
         super(new Rectangle2D.Double(xPos, yPos, bWidth, bHeight), color);
-        this.panel = p;
         initiate(); // setting isDestroyed to false outside of constructor
     }
 

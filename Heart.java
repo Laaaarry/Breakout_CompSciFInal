@@ -1,9 +1,10 @@
 import java.awt.*;
 
 public class Heart {
-    private Image h;
-    int xPos;
-    int yPos;
+    // class for the heart sprite
+    private Image h; // image of the sprite
+    int xPos; // X position where it will be drawn at
+    int yPos; // Y position where it will be drawn at
 
     // Constructor for the image that shows the lives
     public Heart(Image img) {

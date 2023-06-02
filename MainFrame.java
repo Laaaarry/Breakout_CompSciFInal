@@ -2,6 +2,7 @@ import javax.swing.*;
 
 public class MainFrame extends JFrame {
     // the main JFrame the game will run on
+    // main method
     public static void main(String[] args) {
         new MainFrame();
 

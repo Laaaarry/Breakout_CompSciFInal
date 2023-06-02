@@ -2,13 +2,17 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class Paddle extends SpriteBase {
-    // attributes for the paddle
+    // Class for the paddle sprite
+    // starting position for the paddle
     private static int STARTX = 425;
     private static int STARTY = 530;
+    // size of the paddle
     private static int pWidth = 150;
     private static int pHeight = 20;
+    // an instance of the GamePanel for reference
     private GamePanel panel;
-
+    // the speed of the paddle
+    // starts at 0, changes when left or right arrow keys are pressed
     private static double moveSpeed = 0;
 
     // constructor, creates paddle

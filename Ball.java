@@ -2,12 +2,15 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class Ball extends SpriteBase {
+    // This class is the object of the ball
     // ball attributes
-    private static int BALLSIZE = 20;
-    private static double ballSpeed = 3;
-    private static double speedCap = 20;
+    private static int BALLSIZE = 20; // size of the ball - does not change
+    private static double ballSpeed = 3; // the speed the ball moves at
+    private static double speedCap = 20; // the maximum speed the ball can move at
+    // sets the x and y movement to the ball speed
     private double xDir = ballSpeed;
     private double yDir = -ballSpeed;
+    // an instance of the current panel the game runs on
     private GamePanel panel;
 
     // constructor for the ball
@@ -16,6 +19,7 @@ public class Ball extends SpriteBase {
         this.panel = p;
     }
 
+    // moves the ball
     public void bMove() {
         // if the ball will move outside the panel, the ball will go the other way
         if (getX() + xDir < 0) {
@@ -31,7 +35,6 @@ public class Ball extends SpriteBase {
             Up();
         }
         super.move(xDir, yDir);
-
         speedCounter();
     }
 
@@ -105,7 +108,7 @@ public class Ball extends SpriteBase {
         }
     }
 
-    // Randomly increases/decreases the ball speed slightly
+    // The next two methods randomly increases/decreases the ball speed slightly
     public void speedRandomizeX() {
         double rand = Math.random() + 1;
         if (rand < 1.5 && Math.abs(xDir) > ballSpeed) {

@@ -3,14 +3,15 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class GamePanel extends JPanel {
+    // This class is the container where the game runs in
     // Initialize Object Variables
-    private Ball ball;
-    private Paddle paddle;
+    private Ball ball; // instance of the ball
+    private Paddle paddle; //instance of the paddle
     private Bricks[] bricks; // an array for creating bricks
-    private Background bg;
-    private Heart heart;
+    private Background bg; // instance of the background
+    private Heart heart; // instance of the sprite for the lives
 
-    // Setting color variables
+    // Setting color variables used in the menu
     private Color menuScreen = new Color(102, 178, 225);
     private Color menuButton = new Color(51, 0, 102);
     private Color menuText = new Color(225, 225, 255);
@@ -30,14 +31,14 @@ public class GamePanel extends JPanel {
     private int lives = maxLives;
 
     // Animation-related variables
-    private Timer timer;
-    private int delay = 10;
-    // Game-state boolean variables
-    private boolean GameNew = true;
-    private boolean GameRunning = false;
-    private boolean GameOver = false;
-    private boolean GamePaused = false;
-    private boolean InMenu = true;
+    private Timer timer; // instance of the timer
+    private int delay = 10; // the delay of the timer
+    // Game-state boolean variables to determine what to display
+    private boolean GameNew = true; // only true when the game is first opened
+    private boolean GameRunning = false; // whether the game is running or not
+    private boolean GameOver = false; // whether the game has ended (lost all lives)
+    private boolean GamePaused = false; // whether the game is paused
+    private boolean InMenu = true; //whether the game is in the menu screen
 
     // Constructor for the class
     public GamePanel() {
@@ -49,7 +50,7 @@ public class GamePanel extends JPanel {
         setFocusable(true);
     }
 
-    // Resets (creates) the game interface
+    // Resets (and creates) the game interface
     private void Reset() {
         // Resetting objects and values
         ball = new Ball(getRandomColor(), this, ballSTARTX, ballSTARTY);
@@ -67,7 +68,7 @@ public class GamePanel extends JPanel {
         timer = new Timer(delay, new TimeEvents());
     }
 
-    // Creates instances of the brick for each brick in the game
+    // Creates instances of the brick for each brick that will be in the game
     public void createBricks() {
         int b = 0;
         for (int i = 1; i <= col; i++) {
@@ -94,6 +95,8 @@ public class GamePanel extends JPanel {
         Rectangle br;
         Rectangle pa = paddle.getBounds();
         // Bounces ball back up if it hits the paddle
+        // the ball bounces left if it hits the left side of the paddle
+        // and bounces right if it hits the right side
         if (ba.intersects(pa)) {
             ball.Up();
             if (ball.getCenterX() <= paddle.getX() + paddle.getWidth() / 2) {
@@ -107,6 +110,7 @@ public class GamePanel extends JPanel {
             brick = bricks[i];
             br = brick.getBounds();
             if (!bricks[i].checkStatus() && ba.intersects(br)) {
+                // if a collision is detected, the ball bounces and the brick is destroyed
                 bounceBallBrick(ball, bricks[i]);
                 BrickDestroyed(i);
             }
@@ -119,8 +123,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    // Bounces the ball off the brick based on the ball's relative location to the
-    // brick
+    // Bounces the ball off the brick based on the ball's relative location to the brick
     public void bounceBallBrick(Ball ba, Bricks br) {
         if (ball.BallLeft(ba, br)) {
             ball.Left();
@@ -183,12 +186,11 @@ public class GamePanel extends JPanel {
         }
     }
 
-    // Primary in-game actions - moves ball and paddle, checks for collisions and
-    // repaints the screen
+    // Primary in-game events
+    // moves the ball and paddle, checks for collisions and then updates the screen
     public void gameCycle() {
         ball.bMove();
         paddle.pMove();
-
         checkCollisions();
         repaint();
     }
@@ -238,7 +240,6 @@ public class GamePanel extends JPanel {
         GameNew = false;
         GameOver = true;
         InMenu = true;
-
         if (timer != null) {
             timer.stop();
         }
@@ -251,13 +252,13 @@ public class GamePanel extends JPanel {
     }
 
     // The main paint method
-    // Depending on the game state, it will either display the game statistics or a
-    // menu screen
+    // Depending on the game state, it will either display the game statistics or a menu screen
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         bg.paintBg(g2);
         paintGame(g2);
+        // Decides whether to display stats or menu through the GameRunning boolean
         if (GameRunning) {
             inGameMessage(g2);
         }
@@ -266,7 +267,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    // Paints the game objects
+    // Paints the game objects (ball, paddle, bricks)
     public void paintGame(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         ball.draw(g2);
