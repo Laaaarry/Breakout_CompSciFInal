@@ -108,21 +108,43 @@ public class Ball extends SpriteBase {
     // Randomly increases/decreases the ball speed slightly
     public void speedRandomizeX() {
         double rand = Math.random() + 1;
-        if (rand < 1.5 && xDir > 3) {
-            xDir -= 0.5;
+        if (rand < 1.5 && Math.abs(xDir) > ballSpeed) {
+            if (xDir > 0) {
+                xDir -= 0.5;
+            }
+            if (xDir < 0) {
+                xDir += 0.5;
+            }
             System.out.println("Random slow");
-        } else {
-            xDir += 0.4;
+        } else if (rand >= 1.5 && Math.abs(xDir) < ballSpeed + 3) {
+            if (xDir > 0) {
+                xDir += 0.5;
+            }
+            if (xDir < 0) {
+                xDir -= 0.5;
+            }
             System.out.println("Random fast");
         }
     }
 
     public void speedRandomizeY() {
         double rand = Math.random() + 1;
-        if (rand < 1.5 && yDir > 3) {
-            yDir -= 0.5;
-        } else {
-            yDir += 0.4;
+        if (rand < 1.5 && Math.abs(yDir) > ballSpeed) {
+            if (yDir > 0) {
+                yDir -= 0.5;
+            }
+            if (yDir < 0) {
+                yDir += 0.5;
+            }
+            System.out.println("Random slow");
+        } else if (rand >= 1.5 && Math.abs(yDir) < ballSpeed + 3) {
+            if (yDir > 0) {
+                yDir += 0.5;
+            }
+            if (yDir < 0) {
+                yDir -= 0.5;
+            }
+            System.out.println("Random fast");
         }
     }
 }
